@@ -1,34 +1,16 @@
-
-from pathlib import Path
-import subprocess
-import shutil
 import os
+import subprocess
 
-# Data directory
-DATA_DIR = Path("/home/users/ee16eme/data")
+DATA_DIR = "/home/users/ee16eme/data"
+output_DIR = f"{DATA_DIR}/fern_iceye/slcs"
+os.makedirs(output_DIR, exist_ok=True)
 
-# Input ICEYE products
-ICEYE_X47_tif = (
-    DATA_DIR / "demo_iceye" /
-    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.tif"
-)
+# Input files
+ICEYE_X47_tif = f"{DATA_DIR}/demo_iceye/ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.tif"
+ICEYE_X47_json = ICEYE_X47_tif.replace(".tif", ".json")
 
-ICEYE_X47_json = (
-    DATA_DIR / "demo_iceye" /
-    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.json"
-)
+ICEYE_X49_h5 = f"{DATA_DIR}/CS-26350/SLH_10283683_678351/ICEYE_X49_SLC_SLH_10283683_20260811T011721.h5"
 
-    
-ICEYE_X49_h5 = (
-    DATA_DIR / "CS-26350/SLH_10283683_678351" /
-    "ICEYE_X49_SLC_SLH_10283683_20260811T011721.h5"
-)
-
-# Output directory
-working_DIR = DATA_DIR / "fern_iceye"
-output_DIR = working_DIR / "slcs"
-working_DIR.mkdir(parents=True, exist_ok=True)
-output_DIR.mkdir(parents=True, exist_ok=True)
 
 def convert_iceye(input_file, format_type, annotation=None):
     name = os.path.splitext(os.path.basename(input_file))[0]
