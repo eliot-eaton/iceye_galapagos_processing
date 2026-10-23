@@ -19,7 +19,7 @@ ICEYE_X49_h5 = (
 
 # Output directory
 working_DIR = DATA_DIR / "fern_iceye"
-output_DIR = working_DIR / "slc_data"
+output_DIR = working_DIR / "slcs"
 working_DIR.mkdir(parents=True, exist_ok=True)
 output_DIR.mkdir(parents=True, exist_ok=True)
 
