@@ -55,3 +55,17 @@ X47_slc, X47_par = convert_iceye(
 X49_slc, X49_par = convert_iceye(
     ICEYE_X49_h5, "h5"
 )
+
+
+# convert X47 from fcomplex to scomlex 
+subprocess.run([
+    "SLC_copy",
+    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc",
+    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc.par",
+    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc",
+    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc.par",
+    "2",
+    "-",
+    "-",
+    "-"
+], check=True)
