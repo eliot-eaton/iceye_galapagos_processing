@@ -2,6 +2,7 @@
 from pathlib import Path
 import subprocess
 import shutil
+import os
 
 # Data directory
 DATA_DIR = Path("/home/users/ee16eme/data")
@@ -12,6 +13,12 @@ ICEYE_X47_tif = (
     "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.tif"
 )
 
+ICEYE_X47_json = (
+    DATA_DIR / "demo_iceye" /
+    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.json"
+)
+
+    
 ICEYE_X49_h5 = (
     DATA_DIR / "CS-26350/SLH_10283683_678351" /
     "ICEYE_X49_SLC_SLH_10283683_20260811T011721.h5"
@@ -23,46 +30,46 @@ output_DIR = working_DIR / "slcs"
 working_DIR.mkdir(parents=True, exist_ok=True)
 output_DIR.mkdir(parents=True, exist_ok=True)
 
-# Gamma programs in the testing version
-TIF_IMPORTER = "par_ICEYE_SLC"
-H5_IMPORTER = "par_ICEYE_SLC_HDF5"
+def convert_iceye(input_file, format_type, annotation=None):
+    name = os.path.splitext(os.path.basename(input_file))[0]
 
-# Check input files
-for path in (ICEYE_X47_tif, ICEYE_X49_h5):
-    if not path.is_file():
-        raise FileNotFoundError(path)
+    slc = f"{output_DIR}/{name}.slc"
+    par = f"{output_DIR}/{name}.slc.par"
 
-# Check Gamma executables
-for program in (TIF_IMPORTER, H5_IMPORTER):
-    executable = shutil.which(program)
-    if executable is None:
-        raise RuntimeError(
-            f"{program} is not available. "
-            "Check that gamma_testing/20260709 is loaded."
-        )
-    print(f"{program}: {executable}")
+    if format_type == "tif":
+        cmd = [
+            "par_ICEYE_SLC",
+            input_file,
+            annotation,
+            par,
+            slc,
+            "0"  # Zero-Doppler geometry
+        ]
 
-def run_gamma(importer, source):
-    slc = output_DIR / f"{source.stem}.slc"
-    par = output_DIR / f"{source.stem}.slc.par"
+    elif format_type == "h5":
+        cmd = [
+            "par_ICEYE_SLC_HDF5",
+            input_file,
+            par,
+            slc,
+            "-",  # Default data type
+            "-"   # Automatic geometry detection
+        ]
+    else:
+        raise ValueError("format_type must be 'tif' or 'h5'")
 
-    command = [
-        importer,
-        str(source),
-        str(par),
-        str(slc),
-        "-"
-    ]
+    print("Running:", " ".join(cmd), flush=True)
+    subprocess.run(cmd, check=True)
 
-    print("\nRunning:", " ".join(command), flush=True)
+    return slc, par
 
-    subprocess.run(command, check=True)
 
-    print("SLC:", slc)
-    print("Parameter file:", par)
+# Convert X47 GeoTIFF
+X47_slc, X47_par = convert_iceye(
+    ICEYE_X47_tif, "tif", ICEYE_X47_json
+)
 
-# Convert ICEYE X47 SLC GeoTIFF
-run_gamma(TIF_IMPORTER, ICEYE_X47_tif)
-
-# Convert ICEYE X49 legacy SLC HDF5
-run_gamma(H5_IMPORTER, ICEYE_X49_h5)
+# Convert X49 HDF5
+X49_slc, X49_par = convert_iceye(
+    ICEYE_X49_h5, "h5"
+)
