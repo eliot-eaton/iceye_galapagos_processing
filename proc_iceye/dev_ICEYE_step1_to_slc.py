@@ -60,8 +60,10 @@ X49_slc, X49_par = convert_iceye(
 )
 
 # change directory to output_DIR = f"{DATA_DIR}/fern_iceye/slcs"
-subprocess.run(["cd", output_DIR], check=True)
-# print
+# subprocess.run(["cd", output_DIR], check=True)
+# # print
+os.chdir(output_DIR)
+print(f"Changed working directory to {output_DIR}", flush=True)
 print('Attempting to convert X47 from fcomplex to scomplex', flush=True)
 # convert X47 from fcomplex to scomlex 
 subprocess.run([
