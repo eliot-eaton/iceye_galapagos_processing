@@ -118,52 +118,13 @@ def construct_date1_date2_combinations(config,n_days,date_min,date_max,step1=Fal
         important_date = config["important_date"]
         no_important_date = False
 
-    if 'rslc_dates' in config:
-        rslc_dates = config['rslc_dates'] 
-    else:
-        rslc_dates = False
-    # how to search for yyyymmddT in filename 
 
-    # check if config['rlc_for_dates'] is true, y names.
+    
+    print('Using SLCs to find dates')
+    search_list = glob(os.path.join(slc_dir,'*'))
+    date_list = [os.path.split(file)[-1] for file in search_list]
+    date_list = [date for date in date_list if 'M' not in date]
 
-    if rslc_dates == True:
-          
-        print('Using RSLCS to find dates')
-        search_list = glob(os.path.join(topdir,'rslc','*'))
-        date_list = [os.path.split(file)[-1] for file in search_list]
-        date_list = [date for date in date_list if 'M' not in date]
-    else:
-        if not os.path.exists(os.path.join(topdir,'dims')):
-            
-            
-            print('Using SLCs to find dates')
-            search_list = glob(os.path.join(slc_dir,'*'))
-            date_list = [os.path.split(file)[-1] for file in search_list]
-            date_list = [date for date in date_list if 'M' not in date]
-        else:
-            print('Using Dims to find dates')
-            search_list = glob(os.path.join(topdir,'*','*','TSX-1*','T?X*'))
-            
-            for file in search_list:
-                file_split =  file.split('/')[-1].split('_')
-                #print(file)
-                date_str = file_split[-1][:8]
-                if  date_str in date_list:
-                    print(bcolors.WARNING+f'{date_str} is repeated'+bcolors.ENDC)
-                    print(file)
-                
-            
-                # Check date tar has corresponding dim 
-                try:
-                    dim_path_check = glob(os.path.join(topdir,'*','*','TSX-1*',f'T?X*{date_str}*','*xml'))[0]
-                except Exception as e:
-                    dim_path_check = ''
-                    # Code that runs if an exception occurs
-                    print(f"An error occurred: {e}")
-                    print(bcolors.WARNING+f'Warning: {date_str} no corresponding DIM'+bcolors.ENDC)
-                finally:
-                    if os.path.exists(dim_path_check):
-                        date_list.append(date_str)
                 
     date_array = np.array(date_list)
     # remove repeated dates
@@ -741,7 +702,8 @@ def main():
     # Load the config file
     with open(args.config_file, 'r') as f:
         config = json.load(f)
-
+        #change directory to:
+    os.chdir('/home/users/ee16eme/data/fern_iceye')
     config['topdir'] = topdir
     config['slc_dir'] = os.path.join(topdir, 'slcs')
     config['rslc_dir'] = os.path.join(topdir, 'rslcs')
@@ -751,7 +713,7 @@ def main():
         config['og_dem_dir'] = os.path.normpath(config['dem_dir'])
     else:
         config['og_dem_dir'] = os.path.join(topdir,'..','dem')
-    
+
     dateM = config['dateM']
     ndays = config['n_days']
     min_n_days = config['min_n_days']
