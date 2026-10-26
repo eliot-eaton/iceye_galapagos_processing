@@ -92,14 +92,26 @@ subprocess.run([
     "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc.par",
     f"{output_DIR}/20251107/"
 ], check=True)
-# print moved 
-print("Moved ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc and its parameter file to 20251107 directory", flush=True)
+
 subprocess.run([
     "mv",
-    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc",
-    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc.par",
-    f"{output_DIR}/20251107/"
+    f"{output_DIR}/20251107/ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc",
+    f"{output_DIR}/20251107/20251107.slc",
 ], check=True)
+
+subprocess.run([
+    "mv",
+    f"{output_DIR}/20251107/ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc.par",
+    f"{output_DIR}/20251107/20251107.slc.par",
+], check=True)
+# print moved 
+print("Moved ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc and its parameter file to 20251107 directory", flush=True)
+# subprocess.run([
+#     "mv",
+#     "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc",
+#     "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc.par",
+#     f"{output_DIR}/20251107/"
+# ], check=True)
 print("Moved ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc and its parameter file to 20251107 directory", flush=True)
 subprocess.run([
     "mv",
@@ -109,4 +121,16 @@ subprocess.run([
 ], check=True)
 print("Moved ICEYE_X49_SLC_SLH_10283683_20260811T011721.slc and its parameter file to 20260811 directory", flush=True)
 
+
+subprocess.run([
+    "mv",
+    f"{output_DIR}/20260811/ICEYE_X49_SLC_SLH_10283683_20260811T011721.slc",
+    f"{output_DIR}/20260811/20260811.slc",
+], check=True)
+
+subprocess.run([
+    "mv",
+    f"{output_DIR}/20260811/ICEYE_X49_SLC_SLH_10283683_20260811T011721.slc.par",
+    f"{output_DIR}/20260811/20260811.slc.par",
+], check=True)
 #create_offset ICEYE_X49_SLC_SLH_10283683_20260811T011721.slc.par ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc.par ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc.par ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.re.slc.par
