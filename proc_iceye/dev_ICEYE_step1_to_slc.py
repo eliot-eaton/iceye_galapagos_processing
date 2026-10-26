@@ -17,7 +17,10 @@ def convert_iceye(input_file, format_type, annotation=None):
     print(f"Converting {input_file} to SLC format ({format_type})", flush=True)
     slc = f"{output_DIR}/{name}.slc"
     par = f"{output_DIR}/{name}.slc.par"
-
+    # first check if output files already exist
+    if os.path.exists(slc) and os.path.exists(par):
+        print(f"Output files {slc} and {par} already exist. Skipping conversion.", flush=True)
+        return slc, par
     if format_type == "tif":
         cmd = [
             "par_ICEYE_SLC",
@@ -45,7 +48,7 @@ def convert_iceye(input_file, format_type, annotation=None):
 
     return slc, par
 
-
+# first check if 
 # Convert X47 GeoTIFF
 X47_slc, X47_par = convert_iceye(
     ICEYE_X47_tif, "tif", ICEYE_X47_json
@@ -56,6 +59,8 @@ X49_slc, X49_par = convert_iceye(
     ICEYE_X49_h5, "h5"
 )
 
+# change directory to output_DIR = f"{DATA_DIR}/fern_iceye/slcs"
+subprocess.run(["cd", output_DIR], check=True)
 # print
 print('Attempting to convert X47 from fcomplex to scomplex', flush=True)
 # convert X47 from fcomplex to scomlex 

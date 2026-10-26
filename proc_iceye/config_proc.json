@@ -1,0 +1,16 @@
+{
+    "rlks": 1,
+    "azlks": 1,
+    "dem": "stvincent_cop30",
+    "demlat": 10,
+    "demlon": 10,
+    "npat_r": 1,
+    "npat_az": 1,
+    "r_init": 1400,
+    "az_init":1400,
+    "dateM": "20260811",
+    "n_days":1000,
+    "dateS": "20210101",
+    "dateE": "20290409",
+    "orbit_dir_file":"asc_or_desc_dates.txt"
+}
