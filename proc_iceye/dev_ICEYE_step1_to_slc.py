@@ -14,7 +14,7 @@ ICEYE_X49_h5 = f"{DATA_DIR}/CS-26350/SLH_10283683_678351/ICEYE_X49_SLC_SLH_10283
 
 def convert_iceye(input_file, format_type, annotation=None):
     name = os.path.splitext(os.path.basename(input_file))[0]
-
+    print(f"Converting {input_file} to SLC format ({format_type})", flush=True)
     slc = f"{output_DIR}/{name}.slc"
     par = f"{output_DIR}/{name}.slc.par"
 
@@ -56,7 +56,8 @@ X49_slc, X49_par = convert_iceye(
     ICEYE_X49_h5, "h5"
 )
 
-
+# print
+print('Attempting to convert X47 from fcomplex to scomplex', flush=True)
 # convert X47 from fcomplex to scomlex 
 subprocess.run([
     "SLC_copy",
@@ -69,3 +70,36 @@ subprocess.run([
     "-",
     "-"
 ], check=True)
+#print 
+print('Finished converting X47 from fcomplex to scomplex', flush=True)
+
+# create seperate directories for each SLC date 20251107 and 20260811
+os.makedirs(f"{output_DIR}/20251107", exist_ok=True)
+os.makedirs(f"{output_DIR}/20260811", exist_ok=True)
+# print
+print("Created directories for 20251107 and 20260811", flush=True)
+# mv the SLCs and their parameter files to their respective directories
+subprocess.run([
+    "mv",
+    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc",
+    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc.par",
+    f"{output_DIR}/20251107/"
+], check=True)
+# print moved 
+print("Moved ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc and its parameter file to 20251107 directory", flush=True)
+subprocess.run([
+    "mv",
+    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc",
+    "ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc.par",
+    f"{output_DIR}/20251107/"
+], check=True)
+print("Moved ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.slc and its parameter file to 20251107 directory", flush=True)
+subprocess.run([
+    "mv",
+    "ICEYE_X49_SLC_SLH_10283683_20260811T011721.slc",
+    "ICEYE_X49_SLC_SLH_10283683_20260811T011721.slc.par",
+    f"{output_DIR}/20260811/"
+], check=True)
+print("Moved ICEYE_X49_SLC_SLH_10283683_20260811T011721.slc and its parameter file to 20260811 directory", flush=True)
+
+#create_offset ICEYE_X49_SLC_SLH_10283683_20260811T011721.slc.par ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc.par ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.slc.par ICEYE_3ZYVUU_20251107T213442Z_6951870_X47_SLP2L_SLC.scomplex.re.slc.par
